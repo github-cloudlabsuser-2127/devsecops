@@ -1,0 +1,22 @@
+# File: .github/workflows/workflow.yml
+
+on: push
+
+jobs:
+  assess-policy-compliance:    
+    runs-on: ubuntu-latest
+    steps:
+    # Azure Login       
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}} 
+    
+    - name: Check for resource compliance
+      uses: azure/policy-compliance-scan@v0
+      with:
+        scopes: |
+          /subscriptions/89e29634-8366-4659-ab29-7e3a148a1061/resourceGroups/contoso-traders-rg150439              
+        scopes-ignore: |
+          /subscriptions/89e29634-8366-4659-ab29-7e3a148a1061/resourceGroups/contoso-traders-rg150439/providers/<resource-provider-name>
+     
